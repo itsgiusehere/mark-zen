@@ -175,3 +175,30 @@ Ready to see your Figma progress and move forward with implementation.
 
 **Next step:**
 Build the functional prototype in Loveable (TipTap WYSIWYG, drag-and-drop, dark/light toggle, footer stats, auto-save logic). When ready, export the code and bring it to local machine.
+
+---
+
+## 2026-02-10 — Session 8: Agentation setup & first iteration
+
+**Where I started:**
+Loveable prototype merged into local MD-Editor project. Dev server running at localhost:8080. Ready to iterate on the functional prototype.
+
+**Key questions I asked:**
+- Does Mark Zen save changes back to local files, or just open them?
+- How do I install and use Agentation for visual feedback?
+- Why is Grammarly appearing weirdly in the editor?
+
+**What I learned / realized:**
+- File System Access API (Phase 4) will enable true auto-save back to original files. Current prototype only reads files via drag-and-drop.
+- Agentation is a React component, not a browser extension — needs to be added to App.tsx to work.
+- Focus mode (dimming inactive paragraphs) was distracting and needed to be removed completely.
+- Agentation enables precise, clickable feedback workflow: click UI elements → add notes → paste markdown → instant fixes.
+
+**Decision made:**
+- Installed Agentation and added it to App.tsx as a dev-only component.
+- Removed focus mode entirely (CSS and TipTap Focus extension).
+- Fixed content width: 700px max-width + responsive padding (2rem mobile, 3rem desktop).
+- User disabled Grammarly manually for localhost (no code fix needed).
+
+**Next step:**
+Continue iterating with Agentation. Apply Figma design styles (Phase 3.5) or wire up File System Access API (Phase 4) depending on user priority.

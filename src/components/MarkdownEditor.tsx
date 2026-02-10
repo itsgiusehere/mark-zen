@@ -5,7 +5,6 @@ import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
-import Focus from '@tiptap/extension-focus';
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useEditorPersistence } from '@/hooks/useEditorPersistence';
 import EditorFooter from './EditorFooter';
@@ -61,7 +60,6 @@ const MarkdownEditor = () => {
       TableRow,
       TableCell,
       TableHeader,
-      Focus.configure({ className: 'has-focus', mode: 'deepest' }),
     ],
     content: '',
     autofocus: true,

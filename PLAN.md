@@ -1,6 +1,6 @@
 # MD-Editor — Plan & Progress Tracker
 
-Last updated: 2026-02-09
+Last updated: 2026-02-10
 
 ---
 
@@ -34,11 +34,14 @@ Loveable handles the technical scaffold. Claude Code translates Figma designs in
 ### Phase 2 — Build Functional Prototype in Loveable (Parallel with Phase 1)
 - [x] Editor choice resolved: TipTap WYSIWYG confirmed (see Decisions Log)
 - [x] Initial Loveable prototype built and working: TipTap, two screens, footer, dark/light toggle
-- [ ] Build functional prototype (no styling): TipTap WYSIWYG, drag-and-drop file handling, dark/light toggle, footer with stats, auto-save logic
-- [ ] Export code from Loveable to local machine
+- [x] Build functional prototype (no styling): TipTap WYSIWYG, drag-and-drop file handling, dark/light toggle, footer with stats, auto-save logic
+- [x] Export code from Loveable to local machine
 
 ### Phase 3 — Local Setup & Testing
-- [ ] Get Loveable code running on local machine (npm install, dev server)
+- [x] Get Loveable code running on local machine (npm install, dev server)
+- [x] Install Agentation for visual feedback workflow
+- [x] First iteration: removed focus mode, fixed content width (700px + padding)
+- [ ] Continue iterating with Agentation feedback
 - [ ] Test functionality: drag-and-drop, typing, dark mode toggle, footer stats
 - [ ] Document any issues or unexpected behavior
 
@@ -81,3 +84,5 @@ Loveable handles the technical scaffold. Claude Code translates Figma designs in
 | 2026-02-05 | One screen only — editor is always visible, no separate landing/empty screen | Drag-and-drop replaces "Open File" button. Editor doubles as scratchpad when no file is loaded. Scratchpad is ephemeral (no persistence, resets on refresh). |
 | 2026-02-09 | Set up Figma MCP for design-to-code workflow | Figma MCP (official, http://127.0.0.1:3845/mcp) is more reliable than direct API calls. Gives Claude Code structured access to Figma design data. |
 | 2026-02-09 | Revised workflow: Design ↔ Functional prototype → Local implementation → Styling | Design and functionality inform each other. Build a working (not styled) prototype in Loveable first, test it locally, then apply Figma styling. One step at a time. |
+| 2026-02-10 | Agentation for visual feedback | Installed Agentation React component to enable click-to-annotate workflow. Faster iteration: click UI → add notes → paste markdown → instant fixes. |
+| 2026-02-10 | Focus mode removed | User feedback: dimming inactive paragraphs was distracting. Removed Focus extension and all focus-related CSS. |

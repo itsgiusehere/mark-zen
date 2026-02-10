@@ -118,10 +118,17 @@
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  padding: 2rem 3rem 60vh;
+  padding: 2rem 2rem 60vh;
   font-size: 1rem;
   line-height: 1.75;
   color: hsl(var(--editor-text));
+}
+
+@media (min-width: 768px) {
+  .tiptap-editor .ProseMirror {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }
 
 .tiptap-editor .ProseMirror ::selection {
@@ -249,52 +256,7 @@
   background: hsl(var(--editor-code-bg));
 }
 
-/* Focus mode: dim inactive elements (exclude lists — handled at item level) */
-.tiptap-editor .ProseMirror > *:not(ul):not(ol):not(.has-focus):not(:has(.has-focus)) {
-  opacity: 0.35;
-  transition: opacity 0.2s ease;
-}
-
-.tiptap-editor .ProseMirror > .has-focus,
-.tiptap-editor .ProseMirror > *:not(ul):not(ol):has(.has-focus) {
-  opacity: 1;
-  transition: opacity 0.2s ease;
-}
-
-/* Lists: always full opacity at container level, dim individual items */
-.tiptap-editor .ProseMirror > ul,
-.tiptap-editor .ProseMirror > ol {
-  opacity: 1;
-}
-
-/* When focus is outside the list, dim all items uniformly */
-.tiptap-editor .ProseMirror > ul:not(:has(.has-focus)) li,
-.tiptap-editor .ProseMirror > ol:not(:has(.has-focus)) li {
-  opacity: 0.35;
-  transition: opacity 0.2s ease;
-}
-
-/* When focus is inside the list, dim only non-focused items */
-.tiptap-editor .ProseMirror > ul:has(.has-focus) li:not(.has-focus):not(:has(.has-focus)),
-.tiptap-editor .ProseMirror > ol:has(.has-focus) li:not(.has-focus):not(:has(.has-focus)) {
-  opacity: 0.35;
-  transition: opacity 0.2s ease;
-}
-
-.tiptap-editor .ProseMirror li.has-focus,
-.tiptap-editor .ProseMirror li:has(.has-focus) {
-  opacity: 1;
-  transition: opacity 0.2s ease;
-}
-
-/* When editor is not focused, show all at full opacity */
-.tiptap-editor .ProseMirror:not(.ProseMirror-focused) > * {
-  opacity: 1;
-}
-
-.tiptap-editor .ProseMirror:not(.ProseMirror-focused) li {
-  opacity: 1;
-}
+/* Focus mode removed per user feedback */
 
 /* Placeholder */
 .tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
