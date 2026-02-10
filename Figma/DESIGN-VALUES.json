@@ -1,0 +1,159 @@
+{
+  "frames": {
+    "light": {
+      "id": "12:73",
+      "name": "1024",
+      "width": 1440,
+      "height": 1963,
+      "contentWidth": 700
+    },
+    "dark": {
+      "id": "38:25",
+      "name": "1024 Dark mode",
+      "width": 1440,
+      "height": 1963,
+      "contentWidth": 700
+    }
+  },
+  "colors": {
+    "light": {
+      "background": "#FDFDFD",
+      "text": "#1A1A1A",
+      "codeBlockBackground": "#F7F7F7",
+      "codeText": "#010B13",
+      "footerText": "#010B13"
+    },
+    "dark": {
+      "background": "#1A1614",
+      "text": "#FDFDFD",
+      "codeBlockBackground": "#262422",
+      "codeText": "#FDFDFD",
+      "footerText": "#FDFDFD"
+    }
+  },
+  "spacing": {
+    "bodyPaddingVertical": 60,
+    "bodyGap": 27,
+    "mainContentGap": 27,
+    "codeBlockPaddingHorizontal": 9,
+    "footerPadding": 9,
+    "footerGap": 27
+  },
+  "layout": {
+    "maxContentWidth": 700,
+    "viewportMinWidth": 1024,
+    "bodyLayoutMode": "VERTICAL",
+    "mainContentLayoutMode": "VERTICAL",
+    "footerLayoutMode": "HORIZONTAL"
+  },
+  "typography": {
+    "styles": {
+      "h1": {
+        "figmaId": "2:191",
+        "figmaName": "H1"
+      },
+      "h2": {
+        "figmaId": "2:192",
+        "figmaName": "H2"
+      },
+      "h3": {
+        "figmaId": "2:221",
+        "figmaName": "H3"
+      },
+      "p": {
+        "figmaId": "2:193",
+        "figmaName": "P"
+      },
+      "pMono": {
+        "figmaId": "12:82",
+        "figmaName": "P Mono"
+      },
+      "pFooter": {
+        "figmaId": "38:22",
+        "figmaName": "P"
+      }
+    },
+    "estimatedProperties": {
+      "body": {
+        "fontSize": "18-20px",
+        "lineHeight": "1.6-1.7",
+        "fontWeight": "regular",
+        "description": "Main content text"
+      },
+      "code": {
+        "fontFamily": "monospace (SF Mono, Consolas, Monaco)",
+        "fontSize": "18-20px",
+        "lineHeight": "1.5-1.6",
+        "description": "Code block text"
+      },
+      "footer": {
+        "fontSize": "14-16px",
+        "fontWeight": "regular",
+        "description": "Footer counter and status text"
+      }
+    }
+  },
+  "components": {
+    "body": {
+      "id": "12:74",
+      "name": "Body",
+      "layoutMode": "VERTICAL",
+      "paddingTop": 60,
+      "paddingBottom": 60,
+      "gap": 27
+    },
+    "mainContent": {
+      "id": "12:75",
+      "name": "Main Content",
+      "layoutMode": "VERTICAL",
+      "gap": 27,
+      "width": 700,
+      "description": "Container for editor content (TipTap)"
+    },
+    "codeBlock": {
+      "id": "14:83",
+      "name": "Code Block",
+      "layoutMode": "VERTICAL",
+      "paddingLeft": 9,
+      "paddingRight": 9,
+      "backgroundLight": "#F7F7F7",
+      "backgroundDark": "#262422",
+      "description": "Code block container within editor"
+    },
+    "footer": {
+      "id": "38:18",
+      "name": "Footer",
+      "layoutMode": "HORIZONTAL",
+      "paddingTop": 9,
+      "paddingBottom": 9,
+      "paddingLeft": 9,
+      "paddingRight": 9,
+      "gap": 27,
+      "description": "Bottom footer with counter and status indicator"
+    },
+    "counter": {
+      "id": "38:20",
+      "name": "Counter",
+      "text": "0 words · 0 characters",
+      "description": "Word and character count"
+    },
+    "indicator": {
+      "id": "38:23",
+      "name": "Indicator",
+      "text": "Saving…",
+      "description": "Auto-save status indicator"
+    }
+  },
+  "responsive": {
+    "minViewportWidth": 1024,
+    "maxContentWidth": 700,
+    "mobileSupport": false,
+    "reason": "File System Access API is desktop-only"
+  },
+  "figmaApi": {
+    "fileId": "xhAYyINlvarv6b0YkTeCIH",
+    "fileName": "Mark Zen",
+    "extractionDate": "2026-02-09",
+    "extractionMethod": "Figma REST API v1"
+  }
+}

@@ -1,0 +1,310 @@
+{
+  "lightMode": {
+    "id": "12:73",
+    "name": "1024",
+    "type": "FRAME",
+    "backgroundColor": {
+      "hex": "#FDFDFD",
+      "rgba": "rgba(253, 253, 253, 1)"
+    },
+    "layout": {
+      "layoutMode": "VERTICAL",
+      "counterAxisSizingMode": "FIXED"
+    },
+    "children": [
+      {
+        "id": "12:74",
+        "name": "Body",
+        "type": "FRAME",
+        "layout": {
+          "layoutMode": "VERTICAL",
+          "counterAxisSizingMode": "FIXED",
+          "paddingTop": 60,
+          "paddingBottom": 60,
+          "gap": 27
+        },
+        "children": [
+          {
+            "id": "12:75",
+            "name": "Main Content",
+            "type": "FRAME",
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "counterAxisSizingMode": "FIXED",
+              "gap": 27
+            },
+            "children": [
+              {
+                "id": "14:90",
+                "name": "### Welcome to MarkdownPad\\n\\nDrag a .md file here / or just start writing",
+                "type": "TEXT",
+                "backgroundColor": {
+                  "hex": "#1A1A1A",
+                  "rgba": "rgba(26, 26, 26, 1)"
+                },
+                "typography": {
+                  "textColor": {
+                    "hex": "#1A1A1A",
+                    "rgba": "rgba(26, 26, 26, 1)"
+                  }
+                },
+                "content": "On minimalism in design\nStep 1: Approach\nDear Back Market hiring team,\nI'm reaching out about the Staff Product Designer (After-Sales) position at Bac"
+              },
+              {
+                "id": "12:76",
+                "name": "### Welcome to MarkdownPad\\n\\nDrag a .md file here / or just start writing",
+                "type": "TEXT",
+                "backgroundColor": {
+                  "hex": "#1A1A1A",
+                  "rgba": "rgba(26, 26, 26, 1)"
+                },
+                "typography": {
+                  "textColor": {
+                    "hex": "#1A1A1A",
+                    "rgba": "rgba(26, 26, 26, 1)"
+                  }
+                },
+                "content": "I'm reaching out about the Staff Product Designer (After-Sales) position at Back Market. I've been an early adopter of Back Market and actively recomm"
+              }
+            ]
+          },
+          {
+            "id": "14:83",
+            "name": "Code Block",
+            "type": "FRAME",
+            "backgroundColor": {
+              "hex": "#F7F7F7",
+              "rgba": "rgba(247, 247, 247, 1)"
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "counterAxisSizingMode": "FIXED",
+              "paddingLeft": 9,
+              "paddingRight": 9
+            },
+            "children": [
+              {
+                "id": "14:85",
+                "name": "### Welcome to MarkdownPad\\n\\nDrag a .md file here / or just start writing",
+                "type": "TEXT",
+                "backgroundColor": {
+                  "hex": "#010B13",
+                  "rgba": "rgba(1, 11, 19, 1)"
+                },
+                "typography": {
+                  "textColor": {
+                    "hex": "#010B13",
+                    "rgba": "rgba(1, 11, 19, 1)"
+                  }
+                },
+                "content": "/Clients\n  /Native_Instruments\n    /Projects\n      NA_Onboarding.md\n      NA_VP.md\n    CX_Initiative.md\n    Team_Alignment.md\n/Weekly\n  Weekly_2025-05"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "38:18",
+        "name": "Footer",
+        "type": "FRAME",
+        "layout": {
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "paddingLeft": 9,
+          "paddingRight": 9,
+          "paddingTop": 9,
+          "paddingBottom": 9,
+          "gap": 27
+        },
+        "children": [
+          {
+            "id": "38:20",
+            "name": "Counter",
+            "type": "TEXT",
+            "backgroundColor": {
+              "hex": "#010B13",
+              "rgba": "rgba(1, 11, 19, 1)"
+            },
+            "typography": {
+              "textColor": {
+                "hex": "#010B13",
+                "rgba": "rgba(1, 11, 19, 1)"
+              }
+            },
+            "content": "0 words · 0 characters"
+          },
+          {
+            "id": "38:23",
+            "name": "Indicator",
+            "type": "TEXT",
+            "backgroundColor": {
+              "hex": "#010B13",
+              "rgba": "rgba(1, 11, 19, 1)"
+            },
+            "typography": {
+              "textColor": {
+                "hex": "#010B13",
+                "rgba": "rgba(1, 11, 19, 1)"
+              }
+            },
+            "content": "Saving…"
+          }
+        ]
+      }
+    ]
+  },
+  "darkMode": {
+    "id": "38:25",
+    "name": "1024 Dark mode",
+    "type": "FRAME",
+    "backgroundColor": {
+      "hex": "#1A1614",
+      "rgba": "rgba(26, 22, 20, 1)"
+    },
+    "layout": {
+      "layoutMode": "VERTICAL",
+      "counterAxisSizingMode": "FIXED"
+    },
+    "children": [
+      {
+        "id": "38:26",
+        "name": "Body",
+        "type": "FRAME",
+        "layout": {
+          "layoutMode": "VERTICAL",
+          "counterAxisSizingMode": "FIXED",
+          "paddingTop": 60,
+          "paddingBottom": 60,
+          "gap": 27
+        },
+        "children": [
+          {
+            "id": "38:27",
+            "name": "Main Content",
+            "type": "FRAME",
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "counterAxisSizingMode": "FIXED",
+              "gap": 27
+            },
+            "children": [
+              {
+                "id": "38:28",
+                "name": "### Welcome to MarkdownPad\\n\\nDrag a .md file here / or just start writing",
+                "type": "TEXT",
+                "backgroundColor": {
+                  "hex": "#FDFDFD",
+                  "rgba": "rgba(253, 253, 253, 1)"
+                },
+                "typography": {
+                  "textColor": {
+                    "hex": "#FDFDFD",
+                    "rgba": "rgba(253, 253, 253, 1)"
+                  }
+                },
+                "content": "On minimalism in design\nStep 1: Approach\nDear Back Market hiring team,\nI'm reaching out about the Staff Product Designer (After-Sales) position at Bac"
+              },
+              {
+                "id": "38:29",
+                "name": "### Welcome to MarkdownPad\\n\\nDrag a .md file here / or just start writing",
+                "type": "TEXT",
+                "backgroundColor": {
+                  "hex": "#1A1A1A",
+                  "rgba": "rgba(26, 26, 26, 1)"
+                },
+                "typography": {
+                  "textColor": {
+                    "hex": "#1A1A1A",
+                    "rgba": "rgba(26, 26, 26, 1)"
+                  }
+                },
+                "content": "I'm reaching out about the Staff Product Designer (After-Sales) position at Back Market. I've been an early adopter of Back Market and actively recomm"
+              }
+            ]
+          },
+          {
+            "id": "38:30",
+            "name": "Code Block",
+            "type": "FRAME",
+            "backgroundColor": {
+              "hex": "#262422",
+              "rgba": "rgba(38, 36, 34, 1)"
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "counterAxisSizingMode": "FIXED",
+              "paddingLeft": 9,
+              "paddingRight": 9
+            },
+            "children": [
+              {
+                "id": "38:31",
+                "name": "### Welcome to MarkdownPad\\n\\nDrag a .md file here / or just start writing",
+                "type": "TEXT",
+                "backgroundColor": {
+                  "hex": "#FDFDFD",
+                  "rgba": "rgba(253, 253, 253, 1)"
+                },
+                "typography": {
+                  "textColor": {
+                    "hex": "#FDFDFD",
+                    "rgba": "rgba(253, 253, 253, 1)"
+                  }
+                },
+                "content": "/Clients\n  /Native_Instruments\n    /Projects\n      NA_Onboarding.md\n      NA_VP.md\n    CX_Initiative.md\n    Team_Alignment.md\n/Weekly\n  Weekly_2025-05"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "38:32",
+        "name": "Footer",
+        "type": "FRAME",
+        "layout": {
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "paddingLeft": 9,
+          "paddingRight": 9,
+          "paddingTop": 9,
+          "paddingBottom": 9,
+          "gap": 27
+        },
+        "children": [
+          {
+            "id": "38:33",
+            "name": "Counter",
+            "type": "TEXT",
+            "backgroundColor": {
+              "hex": "#FDFDFD",
+              "rgba": "rgba(253, 253, 253, 1)"
+            },
+            "typography": {
+              "textColor": {
+                "hex": "#FDFDFD",
+                "rgba": "rgba(253, 253, 253, 1)"
+              }
+            },
+            "content": "0 words · 0 characters"
+          },
+          {
+            "id": "38:34",
+            "name": "Indicator",
+            "type": "TEXT",
+            "backgroundColor": {
+              "hex": "#FDFDFD",
+              "rgba": "rgba(253, 253, 253, 1)"
+            },
+            "typography": {
+              "textColor": {
+                "hex": "#FDFDFD",
+                "rgba": "rgba(253, 253, 253, 1)"
+              }
+            },
+            "content": "Saving…"
+          }
+        ]
+      }
+    ]
+  }
+}
