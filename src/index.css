@@ -106,8 +106,14 @@
     @apply border-border;
   }
 
+  html {
+    background: hsl(var(--editor-bg));
+  }
+
   body {
     @apply bg-background text-foreground;
+    background: hsl(var(--editor-bg));
+    min-height: 100vh;
   }
 }
 
@@ -170,6 +176,16 @@
   font-style: italic;
 }
 
+.tiptap-editor .ProseMirror h1 em,
+.tiptap-editor .ProseMirror h2 em,
+.tiptap-editor .ProseMirror h3 em,
+.tiptap-editor .ProseMirror h4 em,
+.tiptap-editor .ProseMirror h5 em,
+.tiptap-editor .ProseMirror h6 em {
+  font-weight: 700;
+  font-style: italic;
+}
+
 .tiptap-editor .ProseMirror code {
   background: hsl(var(--editor-code-bg));
   color: hsl(var(--editor-code-text));
@@ -177,7 +193,7 @@
   border-radius: 0.25em;
   font-size: 17px;
   font-family: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
-  line-height: 27px;
+  line-height: 25px;
 }
 
 .tiptap-editor .ProseMirror pre {

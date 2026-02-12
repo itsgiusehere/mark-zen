@@ -64,6 +64,63 @@ const EnterAfterHeading = Extension.create({
   },
 });
 
+// Custom extension to exit code blocks with ```
+const ExitCodeBlock = Extension.create({
+  name: 'exitCodeBlock',
+
+  addKeyboardShortcuts() {
+    return {
+      Enter: ({ editor }) => {
+        const { state } = editor;
+        const { $from } = state.selection;
+        const { parent } = $from;
+
+        // Check if we're in a code block
+        if (parent.type.name === 'codeBlock') {
+          const text = parent.textContent;
+
+          // Get the current line (text from last newline to cursor)
+          const textBeforeCursor = text.slice(0, $from.parentOffset);
+          const lastNewlineIndex = textBeforeCursor.lastIndexOf('\n');
+          const currentLine = lastNewlineIndex === -1
+            ? textBeforeCursor
+            : textBeforeCursor.slice(lastNewlineIndex + 1);
+
+          // If current line is ``` (user typed ``` and pressed Enter)
+          if (currentLine.trim() === '```') {
+            // Calculate position where ``` starts
+            const backticksStartPos = $from.parentOffset - currentLine.length;
+            const contentBeforeBackticks = text.slice(0, backticksStartPos).trimEnd();
+            const start = $from.start();
+
+            if (contentBeforeBackticks) {
+              // If there's content, keep it and exit
+              editor.chain()
+                .command(({ tr }) => {
+                  tr.replaceWith(start, start + text.length, state.schema.text(contentBeforeBackticks));
+                  return true;
+                })
+                .exitCode()
+                .insertContent({ type: 'paragraph' })
+                .run();
+            } else {
+              // If only ```, just exit the empty code block
+              editor.chain()
+                .deleteNode('codeBlock')
+                .insertContent({ type: 'paragraph' })
+                .run();
+            }
+
+            return true;
+          }
+        }
+
+        return false;
+      },
+    };
+  },
+});
+
 const MarkdownEditor = () => {
   const { loadContent, saveContent, clearContent, setSaveStatusCallback } = useEditorPersistence();
   const [wordCount, setWordCount] = useState(0);
@@ -102,6 +159,7 @@ const MarkdownEditor = () => {
       StarterKit.configure({
         heading: { levels: [1, 2, 3, 4, 5, 6] },
         codeBlock: { HTMLAttributes: { class: '' } },
+        code: {}, // Enable inline code with input rules
       }),
       Link.configure({ openOnClick: false }),
       Table.configure({ resizable: false }),
@@ -109,6 +167,7 @@ const MarkdownEditor = () => {
       TableCell,
       TableHeader,
       EnterAfterHeading,
+      ExitCodeBlock,
     ],
     content: '',
     autofocus: true,
