@@ -1,6 +1,6 @@
 # MD-Editor — Plan & Progress Tracker
 
-Last updated: 2026-02-10
+Last updated: 2026-02-12
 
 ---
 
@@ -41,14 +41,15 @@ Loveable handles the technical scaffold. Claude Code translates Figma designs in
 - [x] Get Loveable code running on local machine (npm install, dev server)
 - [x] Install Agentation for visual feedback workflow
 - [x] First iteration: removed focus mode, fixed content width (700px + padding)
-- [ ] Continue iterating with Agentation feedback
+- [x] Applied Figma design styling via Agentation feedback
+- [x] Fixed heading Enter key behavior (exits to paragraph)
 - [ ] Test functionality: drag-and-drop, typing, dark mode toggle, footer stats
 - [ ] Document any issues or unexpected behavior
 
 ### Phase 3.5 — Style with Claude Code (After testing)
-- [ ] Apply Figma design styles to local code
-- [ ] Replace default styles with Figma designs: colors, typography, spacing, layout
-- [ ] Match both light and dark mode variants exactly
+- [x] Apply Figma design styles to local code
+- [x] Replace default styles with Figma designs: colors, typography, spacing, layout
+- [ ] Match both light and dark mode variants exactly (only light mode styled so far)
 
 ### Phase 4 — Wire up advanced logic
 - [ ] Drag-and-drop file handling (File System Access API)
@@ -86,3 +87,6 @@ Loveable handles the technical scaffold. Claude Code translates Figma designs in
 | 2026-02-09 | Revised workflow: Design ↔ Functional prototype → Local implementation → Styling | Design and functionality inform each other. Build a working (not styled) prototype in Loveable first, test it locally, then apply Figma styling. One step at a time. |
 | 2026-02-10 | Agentation for visual feedback | Installed Agentation React component to enable click-to-annotate workflow. Faster iteration: click UI → add notes → paste markdown → instant fixes. |
 | 2026-02-10 | Focus mode removed | User feedback: dimming inactive paragraphs was distracting. Removed Focus extension and all focus-related CSS. |
+| 2026-02-12 | Figma design applied | Applied Figma light mode styling: Literata Light (300) body text, Figma color scheme (#FDFDFD bg, #010B13 text), adjusted spacing (120px top padding, 21px paragraph margins, 4px list spacing), edge-to-edge footer with system sans-serif. |
+| 2026-02-12 | Heading Enter key fix | Created custom TipTap extension to fix behavior where pressing Enter after heading continued heading style instead of creating paragraph. Extension properly splits heading text and creates new paragraph. |
+| 2026-02-12 | Custom bullet lists shelved | Attempted to implement two bullet styles (disc for *, dash for -) but alignment issues made it impractical. Reverted to default TipTap behavior (both * and - create disc bullets). |
