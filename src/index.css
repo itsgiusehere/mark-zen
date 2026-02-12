@@ -34,21 +34,21 @@
 
     --radius: 0.5rem;
 
-    /* Editor-specific tokens */
-    --editor-bg: 0 0% 100%;
-    --editor-text: 220 15% 15%;
-    --editor-heading: 220 20% 10%;
-    --editor-code-bg: 220 15% 96%;
-    --editor-code-text: 220 15% 25%;
+    /* Editor-specific tokens - Figma design */
+    --editor-bg: 0 0% 99.2%; /* #FDFDFD */
+    --editor-text: 208 96% 4%; /* #010B13 */
+    --editor-heading: 208 96% 4%; /* #010B13 */
+    --editor-code-bg: 0 0% 96.9%; /* #F7F7F7 */
+    --editor-code-text: 208 96% 4% / 0.7; /* rgba(1,11,19,0.7) */
     --editor-blockquote-border: 220 10% 80%;
-    --editor-blockquote-text: 220 10% 40%;
+    --editor-blockquote-text: 208 96% 4% / 0.7;
     --editor-link: 215 80% 50%;
     --editor-table-border: 220 13% 85%;
     --editor-selection: 215 80% 92%;
 
-    --footer-bg: 220 15% 97%;
-    --footer-border: 220 13% 90%;
-    --footer-text: 220 10% 45%;
+    --footer-bg: 0 0% 99.2%; /* #FDFDFD */
+    --footer-border: 0 0% 89.4%; /* #E4E4E4 */
+    --footer-text: 208 96% 4% / 0.7; /* rgba(1,11,19,0.7) */
 
     --drop-overlay: 215 80% 50%;
   }
@@ -111,24 +111,20 @@
   }
 }
 
-/* TipTap editor styles */
+/* TipTap editor styles - Figma design specs */
 .tiptap-editor .ProseMirror {
   outline: none;
   min-height: calc(100vh - 2.5rem);
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  padding: 2rem 2rem 60vh;
-  font-size: 1rem;
-  line-height: 1.75;
+  padding: 120px 24px 60vh;
+  font-family: 'Literata', Georgia, serif;
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 30px;
+  letter-spacing: 0;
   color: hsl(var(--editor-text));
-}
-
-@media (min-width: 768px) {
-  .tiptap-editor .ProseMirror {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
 }
 
 .tiptap-editor .ProseMirror ::selection {
@@ -143,25 +139,27 @@
 .tiptap-editor .ProseMirror h6 {
   color: hsl(var(--editor-heading));
   font-weight: 700;
-  line-height: 1.3;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
+  font-family: 'Literata', Georgia, serif;
+  margin-bottom: 27px;
 }
 
 .tiptap-editor .ProseMirror h1 {
-  font-size: 2em;
+  font-size: 33px;
+  line-height: 42px;
 }
 
 .tiptap-editor .ProseMirror h2 {
-  font-size: 1.5em;
+  font-size: 27px;
+  line-height: 36px;
 }
 
 .tiptap-editor .ProseMirror h3 {
-  font-size: 1.25em;
+  font-size: 23px;
+  line-height: 33px;
 }
 
 .tiptap-editor .ProseMirror p {
-  margin-bottom: 0.75em;
+  margin-bottom: 21px;
 }
 
 .tiptap-editor .ProseMirror strong {
@@ -177,20 +175,21 @@
   color: hsl(var(--editor-code-text));
   padding: 0.15em 0.35em;
   border-radius: 0.25em;
-  font-size: 0.9em;
-  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+  font-size: 17px;
+  font-family: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
+  line-height: 27px;
 }
 
 .tiptap-editor .ProseMirror pre {
   background: hsl(var(--editor-code-bg));
   color: hsl(var(--editor-code-text));
-  padding: 1em 1.25em;
-  border-radius: 0.5em;
-  margin: 1em 0;
+  padding: 9px;
+  border-radius: 9px;
+  margin: 27px 0;
   overflow-x: auto;
-  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
-  font-size: 0.9em;
-  line-height: 1.6;
+  font-family: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
+  font-size: 17px;
+  line-height: 27px;
 }
 
 .tiptap-editor .ProseMirror pre code {
@@ -211,7 +210,7 @@
 .tiptap-editor .ProseMirror ul,
 .tiptap-editor .ProseMirror ol {
   padding-left: 1.5em;
-  margin: 0.5em 0;
+  margin: 0 0 21px 0;
 }
 
 .tiptap-editor .ProseMirror ul {
@@ -223,7 +222,16 @@
 }
 
 .tiptap-editor .ProseMirror li {
-  margin-bottom: 0.25em;
+  margin-bottom: 0;
+  line-height: 30px;
+}
+
+.tiptap-editor .ProseMirror li + li {
+  margin-top: 4px;
+}
+
+.tiptap-editor .ProseMirror li p {
+  margin-bottom: 0;
 }
 
 .tiptap-editor .ProseMirror a {

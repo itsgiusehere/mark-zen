@@ -5,6 +5,7 @@ import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
+import { Extension } from '@tiptap/core';
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useEditorPersistence } from '@/hooks/useEditorPersistence';
 import EditorFooter from './EditorFooter';
@@ -15,6 +16,53 @@ function countWords(text: string): number {
   if (!trimmed) return 0;
   return trimmed.split(/\s+/).length;
 }
+
+// Custom extension to exit headings on Enter
+const EnterAfterHeading = Extension.create({
+  name: 'enterAfterHeading',
+
+  addKeyboardShortcuts() {
+    return {
+      Enter: ({ editor }) => {
+        const { state } = editor;
+        const { $from } = state.selection;
+        const { parent } = $from;
+
+        // Check if we're in a heading
+        if (parent.type.name === 'heading') {
+          // Split the heading at cursor position
+          const beforeCursor = parent.textContent.slice(0, $from.parentOffset);
+          const afterCursor = parent.textContent.slice($from.parentOffset);
+
+          // If there's text after cursor, create a new paragraph with it
+          if (afterCursor) {
+            const pos = $from.after();
+            editor.chain()
+              .insertContentAt(pos, { type: 'paragraph', content: [{ type: 'text', text: afterCursor }] })
+              .setTextSelection(pos + 1)
+              .run();
+
+            // Remove the text after cursor from heading
+            const headingStart = $from.before();
+            const headingEnd = headingStart + beforeCursor.length + 1;
+            editor.commands.deleteRange({ from: headingStart + beforeCursor.length + 1, to: headingStart + parent.nodeSize - 1 });
+
+            return true;
+          } else {
+            // If no text after cursor, just insert a new paragraph
+            const pos = $from.after();
+            return editor.chain()
+              .insertContentAt(pos, { type: 'paragraph' })
+              .setTextSelection(pos + 1)
+              .run();
+          }
+        }
+
+        return false;
+      },
+    };
+  },
+});
 
 const MarkdownEditor = () => {
   const { loadContent, saveContent, clearContent, setSaveStatusCallback } = useEditorPersistence();
@@ -60,6 +108,7 @@ const MarkdownEditor = () => {
       TableRow,
       TableCell,
       TableHeader,
+      EnterAfterHeading,
     ],
     content: '',
     autofocus: true,
