@@ -125,10 +125,10 @@
   margin-left: auto;
   margin-right: auto;
   padding: 120px 24px 60vh;
-  font-family: 'Literata', Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-size: 19px;
   font-weight: 300;
-  line-height: 30px;
+  line-height: 32px;
   letter-spacing: 0;
   color: hsl(var(--editor-text));
 }
@@ -144,24 +144,29 @@
 .tiptap-editor .ProseMirror h5,
 .tiptap-editor .ProseMirror h6 {
   color: hsl(var(--editor-heading));
-  font-weight: 700;
-  font-family: 'Literata', Georgia, serif;
+  font-weight: 600;
+  font-family: 'Lora', Georgia, serif;
   margin-bottom: 27px;
 }
 
 .tiptap-editor .ProseMirror h1 {
   font-size: 33px;
   line-height: 42px;
+  font-weight: 700;
 }
 
 .tiptap-editor .ProseMirror h2 {
   font-size: 27px;
   line-height: 36px;
+  font-weight: 700;
+  margin-bottom: 21px;
 }
 
 .tiptap-editor .ProseMirror h3 {
-  font-size: 23px;
+  font-size: 22px;
   line-height: 33px;
+  font-weight: 700;
+  margin-bottom: 9px;
 }
 
 .tiptap-editor .ProseMirror p {
@@ -169,7 +174,7 @@
 }
 
 .tiptap-editor .ProseMirror strong {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .tiptap-editor .ProseMirror em {
