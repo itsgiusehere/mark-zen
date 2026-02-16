@@ -23,12 +23,12 @@ Loveable handles the technical scaffold. Claude Code translates Figma designs in
 - [x] Define screens and states to design (with Claude's help)
 - [x] Revised: one screen only (editor is always visible — no separate empty/active screens)
 - [x] Initial design sketches: "1024" (light mode) and "1024 Dark mode" frames created
-- [ ] Refine: Editor in scratchpad mode (empty, with placeholder hint) — light mode
-- [ ] Refine: Editor with file loaded (content visible, footer shows "last saved") — light mode
-- [ ] Add variants: permission error state
+- [x] Refine: Editor in scratchpad mode (empty, with placeholder hint) — light mode
+- [ ] Add variants: permission error state (not needed for scratchpad workflow)
 - [ ] Check layout at 3 desktop widths: full (1440px+), laptop (1024-1440px), small laptop (768-1024px)
-- Note: no "unsaved" state needed — auto-save is silent, only a "last saved" timestamp in footer
-- Note: no mobile design — File System Access API is desktop-only, mobile is out of scope for v1
+- Note: Scratchpad workflow implemented — drag & drop loads content without file link, no auto-save back to source
+- Note: Footer shows word/character count (right), file name when loaded (left)
+- Note: no mobile design — browser-based, mobile is out of scope for v1
 - Note: drag-and-drop is the file entry point. No "Open File" button.
 
 ### Phase 2 — Build Functional Prototype in Loveable (Parallel with Phase 1)
@@ -42,7 +42,10 @@ Loveable handles the technical scaffold. Claude Code translates Figma designs in
 - [x] Install Agentation for visual feedback workflow
 - [x] First iteration: removed focus mode, fixed content width (700px + padding)
 - [x] Applied Figma design styling via Agentation feedback
-- [x] Fixed heading Enter key behavior (exits to paragraph)
+- [x] Fixed heading Enter key behavior (exits to paragraph, handles all edge cases)
+- [x] Switched to Lora font, refined typography (weights, line-height, margins)
+- [x] Implemented scratchpad workflow (drag & drop .md/.txt, no file link)
+- [x] Footer redesign (removed "Saved" indicator, stats on right)
 - [ ] Test functionality: drag-and-drop, typing, dark mode toggle, footer stats
 - [ ] Document any issues or unexpected behavior
 
@@ -52,13 +55,14 @@ Loveable handles the technical scaffold. Claude Code translates Figma designs in
 - [ ] Match both light and dark mode variants exactly (only light mode styled so far)
 
 ### Phase 4 — Wire up advanced logic
-- [ ] Drag-and-drop file handling (File System Access API)
-- [ ] Auto-save with debouncing (every 2s) — only when file is loaded
-- [ ] Permission handling + error states
-- [ ] Keyboard shortcuts (Cmd+S, Cmd+B, Cmd+I)
-- [ ] Word/char count in footer
-- [ ] "Last saved" indicator
-- [ ] Light/dark mode toggle (persisted)
+- [x] Drag-and-drop file handling (.md and .txt files)
+- [x] Word/char count in footer
+- [x] Light/dark mode toggle (persisted)
+- [x] Keyboard shortcuts (Cmd+B, Cmd+I for formatting)
+- [x] LocalStorage persistence (scratchpad content survives refresh)
+- [ ] Heading keyboard shortcuts (Cmd+Alt+1-6)
+- Note: File System Access API and auto-save removed in favor of scratchpad workflow
+- Note: No "last saved" indicator needed — scratchpad has no file link
 
 ### Phase 5 — Test & Deploy
 - [ ] Test in Chrome/Edge
@@ -90,3 +94,7 @@ Loveable handles the technical scaffold. Claude Code translates Figma designs in
 | 2026-02-12 | Figma design applied | Applied Figma light mode styling: Literata Light (300) body text, Figma color scheme (#FDFDFD bg, #010B13 text), adjusted spacing (120px top padding, 21px paragraph margins, 4px list spacing), edge-to-edge footer with system sans-serif. |
 | 2026-02-12 | Heading Enter key fix | Created custom TipTap extension to fix behavior where pressing Enter after heading continued heading style instead of creating paragraph. Extension properly splits heading text and creates new paragraph. |
 | 2026-02-12 | Custom bullet lists shelved | Attempted to implement two bullet styles (disc for *, dash for -) but alignment issues made it impractical. Reverted to default TipTap behavior (both * and - create disc bullets). |
+| 2026-02-16 | Scratchpad workflow confirmed | Editor is now a true scratchpad: drag & drop loads content without file link, no auto-save back to source. Manual copy/paste workflow. This simplifies the UX and removes File System Access API complexity. Content persists in LocalStorage between sessions. |
+| 2026-02-16 | Lora font family | Switched from Literata to Lora for better readability. All weights loaded for flexibility. Body: 300, Headings: 600-700, Strong: 600. |
+| 2026-02-16 | Footer redesign | Removed "Saved" indicator (not needed for scratchpad). Moved word/character count to right side. File name/modified date shown on left when file is loaded. |
+| 2026-02-16 | Typography refinements | Body line-height: 32px, H2 margin-bottom: 21px, H3: 22px size + 9px margin-bottom. Consistent heading weights (H1/H2: 700, H3+: 600). |

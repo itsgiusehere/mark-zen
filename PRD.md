@@ -16,11 +16,12 @@ When drafting content in Obsidian (job applications, LinkedIn posts, articles), 
 ## Core Use Case
 
 1. User drafts content in Obsidian vault
-2. User opens `.md` file in Markdown Polish Editor
-3. User refines writing in beautiful, distraction-free interface
-4. User invokes Claude Chrome extension for AI-assisted improvements when needed
-5. Changes auto-save back to original file location
-6. User returns to Obsidian with polished content intact
+2. User drags `.md` or `.txt` file into Markdown Polish Editor
+3. Editor loads content as scratchpad (no file link — content is copied, not connected)
+4. User refines writing in beautiful, distraction-free interface
+5. User invokes Claude Chrome extension for AI-assisted improvements when needed
+6. User selects all (Cmd+A), copies (Cmd+C), and pastes back into Obsidian
+7. Content persists in browser LocalStorage between sessions (scratchpad survives refresh)
 
 ## Product Principles
 
@@ -37,12 +38,12 @@ When drafting content in Obsidian (job applications, LinkedIn posts, articles), 
 #### Functional Requirements
 
 **File Management**
-- Open existing `.md` files via drag-and-drop onto the editor (primary entry point)
-- Request persistent write permission to opened file via File System Access API
-- Auto-save changes every 2 seconds when content changes (only when a file is loaded)
-- Visual indicator showing last saved time
-- Handle permission errors gracefully with clear user messaging
-- Scratchpad mode: editor is usable without a file. Content is ephemeral — lost on refresh. No persistence needed.
+- Drag-and-drop `.md` or `.txt` files to load content (primary entry point)
+- Content is copied into scratchpad — no file link maintained
+- Manual export workflow: Select All → Copy → Paste elsewhere
+- Content persists in LocalStorage between sessions (scratchpad survives refresh)
+- Footer shows file name and modified date when file was loaded (informational only)
+- No File System Access API — removed complexity, simpler UX
 
 **Editor Core**
 - WYSIWYG markdown rendering: text is always displayed as formatted (bold, italic, headers, etc.). No raw syntax visible.
@@ -53,10 +54,11 @@ When drafting content in Obsidian (job applications, LinkedIn posts, articles), 
 
 **UI/UX**
 - Full viewport editing area (minimal chrome)
-- Word count and character count in footer/corner
+- Footer: word/character count (right), file name when loaded (left)
 - Light/dark mode toggle (persisted to localStorage)
-- Responsive typography that scales appropriately
+- Responsive typography: Lora font family, generous line-height (32px)
 - Smooth transitions (theme switching, UI elements)
+- No "Saved" indicator needed (scratchpad workflow)
 
 #### Non-Functional Requirements
 
@@ -84,18 +86,17 @@ When drafting content in Obsidian (job applications, LinkedIn posts, articles), 
 - **Build Tool**: Vite
 - **Deployment**: Vercel or Netlify (static site)
 
-#### File System Access API Implementation
+#### Scratchpad Implementation
 ```typescript
-// Key interfaces to implement
-interface FileHandle {
-  getFile(): Promise<File>;
-  createWritable(): Promise<FileSystemWritableFileStream>;
-}
+// Drag and drop file loading
+- FileReader API to read .md/.txt file content
+- Load content into TipTap editor (no file handle saved)
+- Warn user if editor has content before replacing
 
-// Core functionality needed
-- window.showOpenFilePicker() // For opening files
-- fileHandle.requestPermission({ mode: 'readwrite' }) // For auto-save
-- Auto-save debounced to avoid excessive writes
+// LocalStorage persistence
+- Auto-save editor content to localStorage on change (debounced)
+- Restore content on page load
+- Clear content manually or on file drop (with confirmation)
 ```
 
 #### Editor Configuration (TipTap)
@@ -109,9 +110,10 @@ interface FileHandle {
 ```typescript
 interface EditorState {
   content: string;
-  fileHandle: FileSystemFileHandle | null;
-  lastSaved: Date | null;
-  isDirty: boolean;
+  fileName: string | null; // Informational only (from drag & drop)
+  lastModified: string | null; // Informational only (from file metadata)
+  wordCount: number;
+  charCount: number;
   theme: 'light' | 'dark';
 }
 ```
@@ -121,10 +123,11 @@ interface EditorState {
 #### Visual Style (IA Writer Inspired)
 
 **Typography**
-- Body text: 18-20px, system font stack (SF Pro on Mac, Segoe UI on Windows)
-- Line height: 1.7
+- Body text: 19px Lora (weight 300), line-height 32px
+- Headings: Lora (H1/H2: 700, H3+: 600)
+- Strong: Lora 600, Italic: Lora italic
 - Max content width: 700px, centered
-- Letter spacing: slightly increased for readability
+- Letter spacing: default (0)
 
 **Colors (Light Mode)**
 - Background: #FFFFFF or very light warm gray (#FAFAFA)
@@ -140,9 +143,9 @@ interface EditorState {
 
 **UI Chrome**
 - No top bar or "Open File" button. The editor is the entire screen.
-- Footer with stats (word count, char count, last saved — or empty if scratchpad mode)
+- Footer: left side shows file name/modified date (when loaded), right side shows word/char count
 - Mode toggle button (light/dark)
-- All controls fade out when typing (focus mode)
+- No focus mode (removed based on user feedback)
 - Placeholder hint in empty editor: subtle, disappears on first keystroke or file drop
 
 **Spacing**
