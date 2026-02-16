@@ -223,8 +223,8 @@ const MarkdownEditor = () => {
 
     const file = files[0];
     
-    if (!file.name.endsWith('.md')) {
-      alert('Please upload a markdown file (.md)');
+    if (!file.name.endsWith('.md') && !file.name.endsWith('.txt')) {
+      alert('Please upload a markdown (.md) or text (.txt) file');
       return;
     }
 
