@@ -86,6 +86,78 @@ const EnterAfterHeading = Extension.create({
   },
 });
 
+// Custom extension: type "* " or "- " inside an indented ordered list item → convert to bullet
+const BulletInOrderedList = Extension.create({
+  name: 'bulletInOrderedList',
+
+  addKeyboardShortcuts() {
+    return {
+      Space: ({ editor }) => {
+        const { state } = editor;
+        const { $from } = state.selection;
+
+        // Must be inside a listItem that's inside an orderedList
+        const listItemDepth = $from.depth - 1;
+        if (listItemDepth < 1) return false;
+
+        const listItemNode = $from.node(listItemDepth);
+        const parentListNode = $from.node(listItemDepth - 1);
+
+        if (
+          listItemNode?.type.name !== 'listItem' ||
+          parentListNode?.type.name !== 'orderedList'
+        ) return false;
+
+        // Check the text before cursor in the current paragraph
+        const textBefore = $from.parent.textBetween(0, $from.parentOffset);
+        if (textBefore !== '*' && textBefore !== '-') return false;
+
+        // Delete the * or - character, then toggle to bullet list
+        return editor
+          .chain()
+          .deleteRange({ from: $from.pos - 1, to: $from.pos })
+          .toggleBulletList()
+          .run();
+      },
+    };
+  },
+});
+
+// Custom extension: type "1 " inside an indented bullet list item → convert to ordered list
+const OrderedInBulletList = Extension.create({
+  name: 'orderedInBulletList',
+
+  addKeyboardShortcuts() {
+    return {
+      Space: ({ editor }) => {
+        const { state } = editor;
+        const { $from } = state.selection;
+
+        // Must be inside a listItem that's inside a bulletList
+        const listItemDepth = $from.depth - 1;
+        if (listItemDepth < 1) return false;
+
+        const listItemNode = $from.node(listItemDepth);
+        const parentListNode = $from.node(listItemDepth - 1);
+
+        if (
+          listItemNode?.type.name !== 'listItem' ||
+          parentListNode?.type.name !== 'bulletList'
+        ) return false;
+
+        const textBefore = $from.parent.textBetween(0, $from.parentOffset);
+        if (textBefore !== '1.') return false;
+
+        return editor
+          .chain()
+          .deleteRange({ from: $from.pos - 2, to: $from.pos })
+          .toggleOrderedList()
+          .run();
+      },
+    };
+  },
+});
+
 // Custom extension to exit code blocks with ```
 const ExitCodeBlock = Extension.create({
   name: 'exitCodeBlock',
@@ -185,6 +257,8 @@ const MarkdownEditor = () => {
       TableHeader,
       EnterAfterHeading,
       ExitCodeBlock,
+      BulletInOrderedList,
+      OrderedInBulletList,
     ],
     content: '',
     autofocus: true,

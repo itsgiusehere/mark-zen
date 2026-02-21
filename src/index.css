@@ -238,7 +238,20 @@
   list-style-type: disc;
 }
 
+/* Ordered Lists — level 1: 1, 2, 3 / level 2: a, b, c / level 3: i, ii, iii / then cycle back */
 .tiptap-editor .ProseMirror ol {
+  list-style-type: decimal;
+}
+
+.tiptap-editor .ProseMirror ol ol {
+  list-style-type: lower-alpha;
+}
+
+.tiptap-editor .ProseMirror ol ol ol {
+  list-style-type: lower-roman;
+}
+
+.tiptap-editor .ProseMirror ol ol ol ol {
   list-style-type: decimal;
 }
 
@@ -249,6 +262,13 @@
 
 .tiptap-editor .ProseMirror li + li {
   margin-top: 4px;
+}
+
+/* First indented item: add top spacing so it doesn't feel glued to the parent item */
+.tiptap-editor .ProseMirror li > ul,
+.tiptap-editor .ProseMirror li > ol {
+  margin-top: 4px;
+  margin-bottom: 0;
 }
 
 .tiptap-editor .ProseMirror li p {
