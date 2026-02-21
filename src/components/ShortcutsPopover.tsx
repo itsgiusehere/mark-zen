@@ -1,34 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 
 const shortcuts = [
-  {
-    section: 'Markdown',
-    items: [
-      { trigger: '#',       description: 'Heading 1' },
-      { trigger: '##',      description: 'Heading 2' },
-      { trigger: '###',     description: 'Heading 3' },
-      { trigger: '**text**', description: 'Bold' },
-      { trigger: '*text*',  description: 'Italic' },
-      { trigger: '- ',      description: 'Bullet list' },
-      { trigger: '1. ',     description: 'Ordered list' },
-      { trigger: '> ',      description: 'Blockquote' },
-      { trigger: '``` ',    description: 'Code block' },
-      { trigger: '`text`',  description: 'Inline code' },
-      { trigger: '---',     description: 'Divider' },
-    ],
-  },
-  {
-    section: 'Keyboard',
-    items: [
-      { trigger: 'Cmd B',   description: 'Bold' },
-      { trigger: 'Cmd I',   description: 'Italic' },
-      { trigger: 'Cmd Z',   description: 'Undo' },
-      { trigger: 'Cmd ⇧ Z', description: 'Redo' },
-      { trigger: 'Tab',     description: 'Indent list item' },
-      { trigger: '⇧ Tab',   description: 'Outdent list item' },
-      { trigger: 'Enter',   description: 'Exit heading / new paragraph' },
-    ],
-  },
+  { trigger: 'Cmd B',       description: 'Bold' },
+  { trigger: 'Cmd I',       description: 'Italic' },
+  { trigger: 'Cmd U',       description: 'Underline' },
+  { trigger: 'Cmd ⇧ S',    description: 'Strikethrough' },
+  { trigger: 'Cmd ⇧ H',    description: 'Highlight' },
+  { trigger: 'Cmd K',       description: 'Link (on selection)' },
+  { trigger: 'Cmd Z',       description: 'Undo' },
+  { trigger: 'Cmd ⇧ Z',    description: 'Redo' },
+  { trigger: 'Tab',         description: 'Indent list item' },
+  { trigger: '⇧ Tab',      description: 'Outdent list item' },
+  { trigger: 'Enter',       description: 'Exit heading' },
 ];
 
 const ShortcutsPopover = () => {
@@ -94,37 +77,23 @@ const ShortcutsPopover = () => {
             zIndex: 200,
           }}
         >
-          {shortcuts.map((group, gi) => (
-            <div key={gi} style={{ marginBottom: gi < shortcuts.length - 1 ? '16px' : 0 }}>
-              <div style={{
-                fontSize: '11px',
-                fontWeight: 600,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                opacity: 0.4,
-                marginBottom: '8px',
-              }}>
-                {group.section}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {shortcuts.map((item, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ opacity: 0.55 }}>{item.description}</span>
+                <kbd style={{
+                  fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
+                  fontSize: '12px',
+                  background: 'hsl(var(--footer-border))',
+                  borderRadius: '4px',
+                  padding: '1px 6px',
+                  opacity: 0.85,
+                }}>
+                  {item.trigger}
+                </kbd>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {group.items.map((item, i) => (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ opacity: 0.55 }}>{item.description}</span>
-                    <kbd style={{
-                      fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
-                      fontSize: '12px',
-                      background: 'hsl(var(--footer-border))',
-                      borderRadius: '4px',
-                      padding: '1px 6px',
-                      opacity: 0.85,
-                    }}>
-                      {item.trigger}
-                    </kbd>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>

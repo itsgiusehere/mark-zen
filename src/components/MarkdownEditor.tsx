@@ -1,13 +1,15 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
+import Highlight from '@tiptap/extension-highlight';
+import Underline from '@tiptap/extension-underline';
 import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
 import { Extension } from '@tiptap/core';
 import { TextSelection } from '@tiptap/pm/state';
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useEditorPersistence } from '@/hooks/useEditorPersistence';
 import EditorFooter from './EditorFooter';
 import DropOverlay from './DropOverlay';
@@ -82,6 +84,25 @@ const EnterAfterHeading = Extension.create({
 
         return false;
       },
+    };
+  },
+});
+
+// Custom extension: Cmd+K (link), Cmd+Shift+S (strikethrough), Cmd+Shift+H (highlight)
+const FormattingShortcuts = Extension.create({
+  name: 'formattingShortcuts',
+
+  addKeyboardShortcuts() {
+    return {
+      'Mod-k': ({ editor }) => {
+        const { empty } = editor.state.selection;
+        if (empty) return false;
+        const existingHref = editor.getAttributes('link').href ?? '';
+        window.dispatchEvent(new CustomEvent('open-link-dialog', { detail: { existingHref } }));
+        return true;
+      },
+      'Mod-Shift-s': ({ editor }) => editor.chain().focus().toggleStrike().run(),
+      'Mod-Shift-h': ({ editor }) => editor.chain().focus().toggleHighlight().run(),
     };
   },
 });
@@ -221,6 +242,20 @@ const MarkdownEditor = () => {
   const [charCount, setCharCount] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const dragCounterRef = useRef(0);
+  const [linkDialog, setLinkDialog] = useState<{ open: boolean; initialUrl: string }>({ open: false, initialUrl: '' });
+  const [linkUrl, setLinkUrl] = useState('');
+  const linkInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { existingHref } = (e as CustomEvent).detail;
+      setLinkUrl(existingHref);
+      setLinkDialog({ open: true, initialUrl: existingHref });
+      setTimeout(() => linkInputRef.current?.select(), 50);
+    };
+    window.addEventListener('open-link-dialog', handler);
+    return () => window.removeEventListener('open-link-dialog', handler);
+  }, []);
 
   const updateStats = useCallback((text: string) => {
     setWordCount(countWords(text));
@@ -248,6 +283,8 @@ const MarkdownEditor = () => {
         codeBlock: { HTMLAttributes: { class: '' } },
         code: {}, // Enable inline code with input rules
       }),
+      Highlight.configure({ multicolor: false }),
+      Underline,
       Link.configure({ openOnClick: false }),
       Table.configure({ resizable: false }),
       TableRow,
@@ -255,6 +292,7 @@ const MarkdownEditor = () => {
       TableHeader,
       EnterAfterHeading,
       ExitCodeBlock,
+      FormattingShortcuts,
       BulletInOrderedList,
       OrderedInBulletList,
     ],
@@ -275,6 +313,21 @@ const MarkdownEditor = () => {
       }
     },
   });
+
+  const applyLink = useCallback(() => {
+    if (!editor) return;
+    if (linkUrl === '') {
+      editor.chain().focus().unsetMark('link').run();
+    } else {
+      editor.chain().focus().setLink({ href: linkUrl }).run();
+    }
+    setLinkDialog({ open: false, initialUrl: '' });
+  }, [editor, linkUrl]);
+
+  const cancelLink = useCallback(() => {
+    setLinkDialog({ open: false, initialUrl: '' });
+    editor?.commands.focus();
+  }, [editor]);
 
   // Drag and drop handlers
   const handleDragEnter = useCallback((e: React.DragEvent) => {
@@ -361,6 +414,95 @@ const MarkdownEditor = () => {
       >
         <EditorContent editor={editor} />
       </div>
+      {linkDialog.open && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 300,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onMouseDown={(e) => { if (e.target === e.currentTarget) cancelLink(); }}
+        >
+          <div
+            style={{
+              background: 'hsl(var(--footer-bg))',
+              border: '1px solid hsl(var(--footer-border))',
+              borderRadius: '8px',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
+              padding: '16px',
+              width: '360px',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+              fontSize: '13px',
+              color: 'hsl(var(--footer-text))',
+            }}
+          >
+            <div style={{ marginBottom: '10px', opacity: 0.4, fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Link URL
+            </div>
+            <input
+              ref={linkInputRef}
+              type="url"
+              value={linkUrl}
+              onChange={e => setLinkUrl(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'Enter') applyLink();
+                if (e.key === 'Escape') cancelLink();
+              }}
+              placeholder="https://"
+              style={{
+                width: '100%',
+                boxSizing: 'border-box',
+                background: 'hsl(var(--editor-bg))',
+                border: '1px solid hsl(var(--footer-border))',
+                borderRadius: '4px',
+                padding: '6px 10px',
+                fontSize: '13px',
+                color: 'hsl(var(--footer-text))',
+                outline: 'none',
+                marginBottom: '12px',
+                fontFamily: 'inherit',
+              }}
+              autoFocus
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+              <button
+                onClick={cancelLink}
+                style={{
+                  background: 'none',
+                  border: '1px solid hsl(var(--footer-border))',
+                  borderRadius: '4px',
+                  padding: '5px 14px',
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  color: 'hsl(var(--footer-text))',
+                  fontFamily: 'inherit',
+                  opacity: 0.7,
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={applyLink}
+                style={{
+                  background: 'hsl(var(--footer-text))',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '5px 14px',
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  color: 'hsl(var(--editor-bg))',
+                  fontFamily: 'inherit',
+                }}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <EditorFooter
         wordCount={wordCount}
         charCount={charCount}

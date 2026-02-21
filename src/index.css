@@ -275,6 +275,18 @@
   margin-bottom: 0;
 }
 
+.tiptap-editor .ProseMirror mark {
+  background-color: #fff176;
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.dark .tiptap-editor .ProseMirror mark {
+  background-color: #b8860b;
+  color: #fff;
+}
+
 .tiptap-editor .ProseMirror a {
   color: hsl(var(--editor-link));
   text-decoration: underline;
