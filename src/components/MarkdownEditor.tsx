@@ -219,8 +219,6 @@ const MarkdownEditor = () => {
   const { loadContent, saveContent, clearContent } = useEditorPersistence();
   const [wordCount, setWordCount] = useState(0);
   const [charCount, setCharCount] = useState(0);
-  const [fileName, setFileName] = useState<string>();
-  const [lastModified, setLastModified] = useState<string>();
   const [isDragOver, setIsDragOver] = useState(false);
   const dragCounterRef = useRef(0);
 
@@ -230,10 +228,10 @@ const MarkdownEditor = () => {
   }, []);
 
   const scrollCursorToCenter = useCallback((editor: any) => {
+    if (!editor.isEditable) return;
     requestAnimationFrame(() => {
       const { view } = editor;
       const coords = view.coordsAtPos(view.state.selection.head);
-      const editorRect = view.dom.getBoundingClientRect();
       // Only scroll if cursor is in lower 40% of viewport
       const viewportThreshold = window.innerHeight * 0.6;
       if (coords.top > viewportThreshold) {
@@ -285,8 +283,9 @@ const MarkdownEditor = () => {
     dragCounterRef.current++;
     if (e.dataTransfer.types.includes('Files')) {
       setIsDragOver(true);
+      editor?.setEditable(false);
     }
-  }, []);
+  }, [editor]);
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -294,8 +293,9 @@ const MarkdownEditor = () => {
     dragCounterRef.current--;
     if (dragCounterRef.current === 0) {
       setIsDragOver(false);
+      editor?.setEditable(true);
     }
-  }, []);
+  }, [editor]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -307,6 +307,7 @@ const MarkdownEditor = () => {
     e.stopPropagation();
     dragCounterRef.current = 0;
     setIsDragOver(false);
+    editor?.setEditable(true);
 
     const files = e.dataTransfer.files;
     if (!files.length) return;
@@ -316,12 +317,6 @@ const MarkdownEditor = () => {
     if (!file.name.endsWith('.md') && !file.name.endsWith('.txt')) {
       alert('Please upload a markdown (.md) or text (.txt) file');
       return;
-    }
-
-    // Check if editor has content
-    if (editor && !editor.isEmpty) {
-      const proceed = window.confirm('Current content will be lost. Do you want to proceed?');
-      if (!proceed) return;
     }
 
     const reader = new FileReader();
@@ -341,9 +336,6 @@ const MarkdownEditor = () => {
         editor.commands.setContent(html);
         updateStats(editor.getText());
 
-        setFileName(file.name);
-        setLastModified(new Date(file.lastModified).toLocaleString());
-
         // Save the new content
         saveContent(editor);
       }
@@ -360,12 +352,18 @@ const MarkdownEditor = () => {
       onDrop={handleDrop}
     >
       <DropOverlay visible={isDragOver} />
-      <EditorContent editor={editor} />
+      <div
+        style={{
+          opacity: isDragOver ? 0.7 : 1,
+          pointerEvents: isDragOver ? 'none' : 'auto',
+          transition: 'opacity 0.2s ease',
+        }}
+      >
+        <EditorContent editor={editor} />
+      </div>
       <EditorFooter
         wordCount={wordCount}
         charCount={charCount}
-        fileName={fileName}
-        lastModified={lastModified}
       />
     </div>
   );
