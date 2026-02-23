@@ -6,6 +6,8 @@ const shortcuts = [
   { trigger: 'Cmd U',       description: 'Underline' },
   { trigger: 'Cmd ⇧ S',    description: 'Strikethrough' },
   { trigger: 'Cmd ⇧ H',    description: 'Highlight' },
+  { trigger: 'Cmd E',       description: 'Inline code' },
+  { trigger: 'Cmd ⇧ B',    description: 'Blockquote' },
   { trigger: 'Cmd K',       description: 'Link (on selection)' },
   { trigger: 'Cmd Z',       description: 'Undo' },
   { trigger: 'Cmd ⇧ Z',    description: 'Redo' },

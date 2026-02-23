@@ -103,6 +103,7 @@ const FormattingShortcuts = Extension.create({
       },
       'Mod-Shift-s': ({ editor }) => editor.chain().focus().toggleStrike().run(),
       'Mod-Shift-h': ({ editor }) => editor.chain().focus().toggleHighlight().run(),
+      'Mod-e': ({ editor }) => editor.chain().focus().toggleCode().run(),
     };
   },
 });
