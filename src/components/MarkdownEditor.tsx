@@ -179,6 +179,138 @@ const OrderedInBulletList = Extension.create({
   },
 });
 
+// Custom extension: apply bold/italic when cursor leaves a **...** or *...* span.
+// Tracks which span the cursor was inside, and applies formatting on exit.
+// Also clears stored marks when a paragraph becomes empty (fixes bold-on-empty-line).
+const InlineMarkdownFormat = Extension.create({
+  name: 'inlineMarkdownFormat',
+
+  addStorage() {
+    return {
+      activeSpan: null as { mark: 'bold' | 'italic' | 'strike' | 'highlight' | 'code' } | null,
+    };
+  },
+
+  addKeyboardShortcuts() {
+    return {
+      // Intercept backspace to prevent the input-rule undo from firing.
+      // When cursor is right after a bold/italic run, ProseMirror's undoInputRule
+      // would partially revert the formatting to raw **text*. Instead, we let
+      // the default backspace delete a single character normally.
+      Backspace: ({ editor }) => {
+        const { state } = editor;
+        const { $from } = state.selection;
+        // Only intercept if there are no stored marks and cursor is not in code
+        if ($from.parent.type.name === 'codeBlock') return false;
+        // If there's an active input rule to undo, swallow it by doing a plain delete
+        const plugins = state.plugins;
+        for (const plugin of plugins) {
+          if ((plugin.spec as any).isInputRules && plugin.getState(state)) {
+            // There's an input rule queued for undo — do a plain char delete instead
+            const { from, to } = state.selection;
+            if (from === to && from > 0) {
+              editor.commands.command(({ tr }) => {
+                tr.delete(from - 1, from);
+                return true;
+              });
+              return true;
+            }
+          }
+        }
+        return false;
+      },
+    };
+  },
+
+  onSelectionUpdate() {
+    const editor = this.editor;
+    const { state } = editor;
+    const { $from } = state.selection;
+
+    if ($from.parent.type.name === 'codeBlock') {
+      this.storage.activeSpan = null;
+      return;
+    }
+
+    // Issue 2 fix: if the paragraph is empty and has stored marks, clear them.
+    if ($from.parent.content.size === 0 && state.storedMarks?.length) {
+      editor.commands.command(({ tr }) => {
+        tr.setStoredMarks([]);
+        return true;
+      });
+      return;
+    }
+
+    const parentStart = $from.start();
+    const fullText = $from.parent.textContent;
+    const cursorOffset = $from.parentOffset;
+
+    type MarkName = 'bold' | 'italic' | 'strike' | 'highlight' | 'code';
+
+    // Each entry: [regex to detect cursor-inside, regex to apply on exit, mark name]
+    const spanRules: Array<{ detect: RegExp; apply: RegExp; mark: MarkName }> = [
+      // bold: **text** or __text__
+      { detect: /\*\*([^*\n]+)\*\*/g,     apply: /\*\*([^*\n]+)\*\*/,     mark: 'bold' },
+      { detect: /__([^_\n]+)__/g,          apply: /__([^_\n]+)__/,          mark: 'bold' },
+      // italic: *text* or _text_ (not preceded/followed by same char)
+      { detect: /(?<!\*)\*([^*\n]+)\*(?!\*)/g, apply: /(?<!\*)\*([^*\n]+)\*(?!\*)/, mark: 'italic' },
+      { detect: /(?<!_)_([^_\n]+)_(?!_)/g,     apply: /(?<!_)_([^_\n]+)_(?!_)/,     mark: 'italic' },
+      // strikethrough: ~~text~~
+      { detect: /~~([^~\n]+)~~/g,          apply: /~~([^~\n]+)~~/,          mark: 'strike' },
+      // highlight: ==text==
+      { detect: /==([^=\n]+)==/g,          apply: /==([^=\n]+)==/,          mark: 'highlight' },
+      // inline code: `text`
+      { detect: /`([^`\n]+)`/g,            apply: /`([^`\n]+)`/,            mark: 'code' },
+    ];
+
+    // Find which span (if any) the cursor is currently inside
+    const findActiveSpan = (): { mark: MarkName } | null => {
+      for (const rule of spanRules) {
+        rule.detect.lastIndex = 0;
+        let m: RegExpExecArray | null;
+        while ((m = rule.detect.exec(fullText)) !== null) {
+          const spanStart = m.index;
+          const spanEnd = m.index + m[0].length;
+          if (cursorOffset > spanStart && cursorOffset < spanEnd) {
+            return { mark: rule.mark };
+          }
+        }
+      }
+      return null;
+    };
+
+    const current = findActiveSpan();
+
+    if (current) {
+      this.storage.activeSpan = { mark: current.mark };
+    } else if (this.storage.activeSpan) {
+      // Cursor just left a span — find the first matching pattern and apply formatting.
+      const { mark } = this.storage.activeSpan;
+      this.storage.activeSpan = null;
+
+      const rule = spanRules.find(r => r.mark === mark);
+      if (!rule) return;
+
+      const m = rule.apply.exec(fullText);
+      if (!m) return;
+
+      const from = parentStart + m.index;
+      const to = from + m[0].length;
+      const inner = m[1];
+
+      editor.chain()
+        .command(({ tr, state: s }) => {
+          const markType = s.schema.marks[mark];
+          if (!markType) return false;
+          tr.replaceWith(from, to, s.schema.text(inner, [markType.create()]));
+          tr.setStoredMarks([]);
+          return true;
+        })
+        .run();
+    }
+  },
+});
+
 // Custom extension to exit code blocks with ```
 const ExitCodeBlock = Extension.create({
   name: 'exitCodeBlock',
@@ -292,6 +424,7 @@ const MarkdownEditor = () => {
       TableHeader,
       EnterAfterHeading,
       ExitCodeBlock,
+      InlineMarkdownFormat,
       FormattingShortcuts,
       BulletInOrderedList,
       OrderedInBulletList,
